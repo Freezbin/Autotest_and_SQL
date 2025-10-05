@@ -1,0 +1,21 @@
+# Запрос на получение списка логинов курьеров и количества у них заказаов в статусе В доставке
+SELECT c.login, COUNT(o.id) AS orders_in_delivery FROM "Couriers" AS c JOIN "Orders" AS o ON c.id = o."courierId" WHERE o."inDelivery" = true GROUP BY c.login;
+# Результат запроса
+ login  | orders_in_delivery
+--------+--------------------
+ ninjin |                  2
+(1 row)
+
+
+# Запрос на получение списка заказов и проверки их статусов
+SELECT o.track, CASE WHEN o."finished" = true THEN 2 WHEN o."cancelled" = true THEN -1 WHEN o."inDelivery" = true THEN 1 ELSE 0 END AS status FROM "Orders" AS o;
+# результат запроса
+ track  | status
+--------+--------
+ 691293 |      1
+ 691293 |      1
+ 604905 |      0
+ 763400 |     -1
+ 625947 |      1
+ 625947 |      2
+(6 rows)
